@@ -9,9 +9,10 @@ const dataSource = new DataSource({
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
   host: process.env.DB_HOST,
-  migrations: [],
+  migrations: [__dirname + "/migrations/*.ts"],
+  entities: [__dirname + "/models/*.{js,ts}"],
   type: "mssql",
-  entities: [],
+  synchronize: false,
 });
 
 export default dataSource;

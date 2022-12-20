@@ -4,11 +4,16 @@ import dataSource from "./src/db/data-source";
 
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
-dataSource.initialize().then((db) => {
-  console.log(`[Server]: Successfully connected to DB ${db.options.database} `);
-}).catch(err => {
-  console.log(`[Server]: Error during data source initialization:`, err);
-});
+dataSource
+  .initialize()
+  .then((db) => {
+    console.log(
+      `[Server]: Successfully connected to DB ${db.options.database} `
+    );
+  })
+  .catch((err) => {
+    console.log(`[Server]: Error during data source initialization:`, err);
+  });
 
 const app: Express = express();
 const port: Number = Number(process.env.PORT);
