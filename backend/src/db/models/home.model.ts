@@ -3,15 +3,17 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
+  Index,
+  ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Home } from "./home.model";
+import { User } from "./user.model";
 
 @Entity()
-export class User extends BaseEntity {
+@Index(["name", "owner"], { unique: true })
+export class Home extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   @PrimaryColumn({
     type: "uniqueidentifier",
@@ -25,25 +27,14 @@ export class User extends BaseEntity {
   })
   name: string;
 
-  @Column({
-    nullable: false,
-    unique: true,
-    length: 255,
-  })
-  emailAddress: string;
-
-  @Column({
-    nullable: false,
-    length: 60,
-  })
-  password: Buffer;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToMany((type) => Home, (home) => home.owner)
-  homes: Home[];
+  @ManyToOne((type) => User, (user) => user.homes, {
+    nullable: false,
+  })
+  owner: User;
 }
