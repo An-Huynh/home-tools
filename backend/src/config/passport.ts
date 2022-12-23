@@ -1,4 +1,9 @@
 import { Strategy as LocalStrategy } from "passport-local";
+import {
+  Strategy as JWTStrategy,
+  VerifiedCallback,
+  ExtractJwt,
+} from "passport-jwt";
 import { User } from "../db/models/user.model";
 import DataSource from "../db/data-source";
 import { compare } from "bcrypt";
@@ -22,4 +27,25 @@ const localStrategy: LocalStrategy = new LocalStrategy(
   }
 );
 
-export { localStrategy };
+const jwtStrategy: JWTStrategy = new JWTStrategy(
+  {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET,
+  },
+  async (payload: any, done: VerifiedCallback) => {
+    try {
+      const user = await userRepository.findOneBy({
+        id: payload.id,
+      });
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    } catch (err) {
+      return done(err);
+    }
+  }
+);
+
+export { localStrategy, jwtStrategy };
