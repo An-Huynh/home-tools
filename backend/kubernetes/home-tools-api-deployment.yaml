@@ -30,6 +30,8 @@ spec:
           value: #{DB_HOST}#
         - name: JWT_SECRET
           value: #{JWT_SECRET}#
+        - name: NODE_ENV
+          value: #{NODE_ENV}#
 ---
 apiVersion: v1
 kind: Service
