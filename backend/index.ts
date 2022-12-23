@@ -14,7 +14,10 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/auth", authRouter);
-app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+
+if (process.env.NODE_ENV !== "production") {
+  app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
+}
 
 app.use(errorHandler);
 
