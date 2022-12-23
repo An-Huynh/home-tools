@@ -10,12 +10,12 @@ const localStrategy: LocalStrategy = new LocalStrategy(
     try {
       const user = await userRepository.findOneBy({ emailAddress: username });
       if (!user) {
-        return done(null, null, { message: `User '${username}' not found.` });
+        return done(null, null, { message: `Incorrect username or password.` });
       }
       if (await compare(password, user.password.toString())) {
         return done(null, user, { message: "Logged in successfully." });
       }
-      return done(null, null, { message: "Incorrect password." });
+      return done(null, null, { message: "Incorrect username or password." });
     } catch (error) {
       return done(error);
     }

@@ -9,7 +9,7 @@ export async function login(req: Request, res: Response, next: NextFunction) {
         return next(err);
       }
       if (!user) {
-        return next(info);
+        return next({ message: info.message, status: 401 });
       }
       req.login(user, { session: false }, async (err) => {
         if (err) {

@@ -3,6 +3,8 @@ import passport from "passport";
 import { localStrategy } from "./src/config/passport";
 import { authRouter } from "./src/routes";
 import { errorHandler } from "./src/middleware/error";
+import swaggerUI from "swagger-ui-express";
+import swaggerSpec from "./src/config/swagger";
 
 passport.use("local", localStrategy);
 
@@ -12,6 +14,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/auth", authRouter);
+app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use(errorHandler);
 
