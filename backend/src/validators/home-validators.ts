@@ -23,4 +23,21 @@ const getHomeValidator = checkSchema({
   },
 });
 
-export { getHomeValidator };
+const addHomeValidator = checkSchema({
+  name: {
+    in: ["body"],
+    isString: true,
+    isLength: {
+      options: {
+        min: 1,
+        max: 255,
+      },
+    },
+  },
+  ownerId: {
+    in: ["body"],
+    isUUID: true,
+  },
+});
+
+export { getHomeValidator, addHomeValidator };

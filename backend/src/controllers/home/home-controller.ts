@@ -43,3 +43,24 @@ export async function getHomes(
     return next(err);
   }
 }
+
+export async function addHome(req: Request, res: Response, next: NextFunction) {
+  try {
+    if (req.user?.id !== req.body.ownerId) {
+      return next({
+        status: 401,
+        message: `Client does not have permission to create a home with ownerId "${req.body.ownerId}"`,
+      });
+    }
+
+    const home = new Home();
+    home.name = req.body.name;
+    home.ownerId = req.body.ownerId;
+
+    const { createdAt, updatedAt, ...createdHome } =
+      await homeRepository.manager.save(home);
+    return res.status(201).json(createdHome);
+  } catch (err) {
+    return next(err);
+  }
+}

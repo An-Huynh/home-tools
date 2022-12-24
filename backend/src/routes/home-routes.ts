@@ -1,8 +1,8 @@
 import express, { Router } from "express";
-import { getHomes } from "../controllers/home/home-controller";
+import { addHome, getHomes } from "../controllers/home/home-controller";
 import passport from "passport";
 import { checkSchemaValidation } from "../middleware/validation";
-import { getHomeValidator } from "../validators";
+import { addHomeValidator, getHomeValidator } from "../validators";
 
 const homeRouter: Router = express.Router();
 
@@ -76,6 +76,57 @@ homeRouter.get(
   checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
   getHomes
+);
+
+/**
+ * @swagger
+ * /home:
+ *   post:
+ *     summary: Create a home.
+ *     description: Create a home. The ownerId must match the user making
+ *                  the request as a user cannot make a home for another user,
+ *                  only themselves.
+ *     tags:
+ *     - Home
+ *     requestBody:
+ *       description: Home details
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               ownerId:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Successfully created home.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                 ownerId:
+ *                   type: string
+ *                 id:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Internal server error
+ */
+homeRouter.post(
+  "/",
+  addHomeValidator,
+  checkSchemaValidation,
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  addHome
 );
 
 export { homeRouter };
