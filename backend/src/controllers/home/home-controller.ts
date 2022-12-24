@@ -53,6 +53,19 @@ export async function addHome(req: Request, res: Response, next: NextFunction) {
       });
     }
 
+    const existingHome = await homeRepository.exist({
+      where: {
+        name: req.body.name,
+        ownerId: req.body.ownerId,
+      },
+    });
+    if (existingHome) {
+      return next({
+        status: 400,
+        message: `Home with name "${req.body.name}" and ownerId "${req.body.ownerId}" already exists.`,
+      });
+    }
+
     const home = new Home();
     home.name = req.body.name;
     home.ownerId = req.body.ownerId;
