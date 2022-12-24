@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import { login } from "../controllers/auth/auth-controller";
+import { checkSchemaValidation } from "../middleware/validation";
+import { loginCredentialValidator } from "../validators";
 
 const authRouter: Router = express.Router();
 
@@ -36,11 +38,18 @@ const authRouter: Router = express.Router();
  *                 jwt:
  *                   type: string
  *                   description: JWT to authenticate calls
+ *       400:
+ *         description: Bad request
  *       401:
  *         description: Unauthorized
  *       500:
  *         description: Internal server error
  */
-authRouter.post("/login", login);
+authRouter.post(
+  "/login",
+  loginCredentialValidator,
+  checkSchemaValidation,
+  login
+);
 
 export { authRouter };
