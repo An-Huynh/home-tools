@@ -12,7 +12,7 @@ export async function getHomes(
   try {
     if (req.user?.id !== req.query.ownerId) {
       return next({
-        status: 401,
+        status: 403,
         message: `Client does not have permission to access homes with ownerId "${req.query.ownerId}"`,
       });
     }
@@ -48,7 +48,7 @@ export async function addHome(req: Request, res: Response, next: NextFunction) {
   try {
     if (req.user?.id !== req.body.ownerId) {
       return next({
-        status: 401,
+        status: 403,
         message: `Client does not have permission to create a home with ownerId "${req.body.ownerId}"`,
       });
     }
