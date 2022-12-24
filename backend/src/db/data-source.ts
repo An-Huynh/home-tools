@@ -15,15 +15,7 @@ const dataSource = new DataSource({
   synchronize: false,
 });
 
-dataSource
-  .initialize()
-  .then((db) => {
-    console.log(
-      `[Server]: Successfully connected to DB ${db.options.database} `
-    );
-  })
-  .catch((err) => {
-    console.log(`[Server]: Error during data source initialization:`, err);
-  });
-
+dataSource.initialize().then((db) => {
+  console.log(`[Server]: Successfully connected to DB ${db.options.database} `);
+});
 export default dataSource;
