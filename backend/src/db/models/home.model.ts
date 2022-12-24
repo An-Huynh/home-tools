@@ -33,6 +33,9 @@ export class Home extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @Column()
+  ownerId: string;
+
   @ManyToOne((type) => User, (user) => user.homes, {
     nullable: false,
   })

@@ -1,10 +1,18 @@
 import express, { Express } from "express";
 import passport from "passport";
 import { localStrategy, jwtStrategy } from "./src/config/passport";
-import { authRouter } from "./src/routes";
+import { authRouter, homeRouter } from "./src/routes";
 import { errorHandler } from "./src/middleware/error";
 import swaggerUI from "swagger-ui-express";
+import { User as UserModel } from "./src/db/models/user.model";
 import swaggerSpec from "./src/config/swagger";
+
+// TODO: Move this somewhere else?
+declare global {
+  namespace Express {
+    interface User extends UserModel {}
+  }
+}
 
 passport.use("local", localStrategy);
 passport.use("jwt", jwtStrategy);
@@ -15,6 +23,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/auth", authRouter);
+app.use("/home", homeRouter);
 
 if (process.env.NODE_ENV !== "production") {
   app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerSpec));

@@ -6,6 +6,16 @@ const swaggerDefinition: SwaggerDefinition = {
     title: "Express API for Home-Tools",
     version: "1.0.0",
   },
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [{ bearerAuth: [] }],
 };
 
 const options: Options = {
