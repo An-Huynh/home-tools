@@ -1,8 +1,13 @@
 import express, { Router } from "express";
-import { addHome, getHomes } from "../controllers/home/home-controller";
+import {
+  addHome,
+  deleteHome,
+  getHomes,
+} from "../controllers/home/home-controller";
 import passport from "passport";
 import { checkSchemaValidation } from "../middleware/validation";
 import { addHomeValidator, getHomeValidator } from "../validators";
+import { param } from "express-validator";
 
 const homeRouter: Router = express.Router();
 
@@ -131,6 +136,44 @@ homeRouter.post(
   checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
   addHome
+);
+
+/**
+ * @swagger
+ * /home/{id}:
+ *   delete:
+ *     summary: Delete a home.
+ *     description: Deletes a home specified via the id parameter in the URL. The caller
+ *                  must be the owner of the home in order for the delete to succeed.
+ *     tags:
+ *     - Home
+ *     parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: ID (UUID) of home.
+ *     responses:
+ *       204:
+ *         description: Successfully deleted home.
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal server error
+ */
+homeRouter.delete(
+  "/:id",
+  param("id").isUUID(),
+  checkSchemaValidation,
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  deleteHome
 );
 
 export { homeRouter };

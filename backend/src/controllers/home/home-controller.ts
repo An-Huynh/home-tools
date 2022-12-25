@@ -77,3 +77,33 @@ export async function addHome(req: Request, res: Response, next: NextFunction) {
     return next(err);
   }
 }
+
+export async function deleteHome(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const home = await homeRepository.findOneBy({
+      id: req.params.id,
+    });
+
+    if (!home) {
+      return res.status(404).json({
+        message: `Home with id "${req.params.id}" cannot be deleted because it does not exist.`,
+      });
+    }
+
+    if (home.ownerId !== req.user?.id) {
+      return res.status(403).json({
+        message: `Client does not have permission to delete home with id "${req.params.id}".`,
+      });
+    }
+
+    await homeRepository.remove(home);
+
+    return res.sendStatus(204);
+  } catch (err) {
+    return next(err);
+  }
+}
