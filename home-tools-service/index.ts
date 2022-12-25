@@ -6,6 +6,7 @@ import { errorHandler } from "./src/middleware/error";
 import swaggerUI from "swagger-ui-express";
 import { User as UserModel } from "./src/db/models/user.model";
 import swaggerSpec from "./src/config/swagger";
+import { corsHandler } from "./src/middleware/cors";
 
 // TODO: Move this somewhere else?
 declare global {
@@ -21,6 +22,8 @@ const app: Express = express();
 const PORT = 3000;
 
 app.use(express.json());
+
+app.use(corsHandler);
 
 app.use("/auth", authRouter);
 app.use("/home", homeRouter);
