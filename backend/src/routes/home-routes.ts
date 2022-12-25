@@ -3,11 +3,16 @@ import {
   addHome,
   deleteHome,
   getHomes,
+  updateHome,
 } from "../controllers/home/home-controller";
 import passport from "passport";
 import { checkSchemaValidation } from "../middleware/validation";
-import { addHomeValidator, getHomeValidator } from "../validators";
-import { param } from "express-validator";
+import {
+  addHomeValidator,
+  getHomeValidator,
+  updateHomeValidator,
+} from "../validators";
+import { check, param, body } from "express-validator";
 
 const homeRouter: Router = express.Router();
 
@@ -174,6 +179,78 @@ homeRouter.delete(
   checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
   deleteHome
+);
+
+/**
+ * @swagger
+ * /home/{id}:
+ *   put:
+ *     summary: Update a home.
+ *     description: Update a home. The ownerId must match the user making
+ *                  the request as a user currently cannot change the owner
+ *                  to another user.
+ *     tags:
+ *     - Home
+ *     parameters:
+ *     - in: path
+ *       name: id
+ *       schema:
+ *         type: string
+ *       required: true
+ *       description: ID (UUID) of home.
+ *     requestBody:
+ *       description: Home details
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               ownerId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successfully updated home.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                 ownerId:
+ *                   type: string
+ *                 id:
+ *                   type: string
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Internal server error
+ */
+homeRouter.put(
+  "/:id",
+  updateHomeValidator,
+  // TODO: Clean this up.
+  // This is to verify 'id' is still passed in the body even
+  // though its not really needed but I want the output and input
+  // of the GET/PUT to be the same.
+  body("id", "id field missing in request body.").exists(),
+  body("id", "home's 'id' field cannot be changed.").custom(
+    (value, { req }) => {
+      return value === undefined || value === req.params?.id;
+    }
+  ),
+  checkSchemaValidation,
+  passport.authenticate("jwt", { session: false, failWithError: true }),
+  updateHome
 );
 
 export { homeRouter };

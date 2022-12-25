@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Home } from "../../db/models/home.model";
 import dataSource from "../../db/data-source";
+import { Not } from "typeorm";
 
 const homeRepository = dataSource.getRepository(Home);
 
@@ -103,6 +104,63 @@ export async function deleteHome(
     await homeRepository.remove(home);
 
     return res.sendStatus(204);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function updateHome(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const home = await homeRepository.findOneBy({
+      id: req.params.id,
+    });
+
+    if (!home) {
+      return res.status(404).json({
+        message: `Home with id "${req.params.id}" does not exist.`,
+      });
+    }
+
+    if (home.ownerId !== req.user?.id) {
+      console.log(`${home.ownerId} - ${req.user?.id}`);
+      console.log(JSON.stringify(req.user));
+      return res.status(403).json({
+        message: `Client does not have permission to modify home with id "${home.id}"`,
+      });
+    }
+
+    // Return error if the request is to change the owner.
+    // Eventually, we'll support changing the other to someone
+    // else with their permission but that'll come later.
+    if (req.body.ownerId !== req.user?.id) {
+      return res.status(403).json({
+        message: `Client does not have permission to change owner of Home "${home.name}".`,
+      });
+    }
+
+    const existingHome = await homeRepository.exist({
+      where: {
+        id: Not(req.params.id),
+        name: req.body.name,
+        ownerId: req.body.ownerId,
+      },
+    });
+    if (existingHome) {
+      return next({
+        status: 400,
+        message: `Home with name "${req.body.name}" and ownerId "${req.body.ownerId}" already exists.`,
+      });
+    }
+
+    home.name = req.body.name;
+
+    const { updatedAt, createdAt, ...updatedHome } = await homeRepository.save(home);
+
+    return res.status(200).json(updatedHome);
   } catch (err) {
     return next(err);
   }
