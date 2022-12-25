@@ -1,36 +1,10 @@
-import { checkSchema } from "express-validator";
+import Joi from "joi";
 
-const loginCredentialValidator = checkSchema({
-  username: {
-    in: ["body"],
-    isString: {
-      errorMessage: "Username must be a string",
-    },
-    exists: {
-      errorMessage: "Username is required",
-    },
-    isLength: {
-      errorMessage: "Username cannot be empty",
-      options: {
-        min: 1,
-      },
-    },
-  },
-  password: {
-    in: ["body"],
-    isString: {
-      errorMessage: "Password must be a string",
-    },
-    exists: {
-      errorMessage: "Password is required",
-    },
-    isLength: {
-      errorMessage: "Password cannot be empty",
-      options: {
-        min: 1,
-      },
-    },
+const loginCredentialSchema = Joi.object().keys({
+  body: {
+    username: Joi.string().min(1).required(),
+    password: Joi.string().min(1).required(),
   },
 });
 
-export { loginCredentialValidator };
+export { loginCredentialSchema };

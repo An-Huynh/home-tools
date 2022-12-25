@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import { login } from "../controllers/auth/auth-controller";
-import { checkSchemaValidation } from "../middleware/validation";
-import { loginCredentialValidator } from "../validators";
+import { loginCredentialSchema } from "../validators";
+import { joiValidation } from "../middleware/validation";
 
 const authRouter: Router = express.Router();
 
@@ -45,11 +45,6 @@ const authRouter: Router = express.Router();
  *       500:
  *         description: Internal server error
  */
-authRouter.post(
-  "/login",
-  loginCredentialValidator,
-  checkSchemaValidation,
-  login
-);
+authRouter.post("/login", joiValidation(loginCredentialSchema), login);
 
 export { authRouter };

@@ -1,64 +1,43 @@
-import { checkSchema } from "express-validator";
+import Joi from "joi";
 
-const getHomeValidator = checkSchema({
-  ownerId: {
-    in: ["query"],
-    isUUID: true,
-  },
-  page: {
-    in: ["query"],
-    isInt: {
-      options: {
-        gt: 0,
-      },
-    },
-  },
-  pageSize: {
-    in: ["query"],
-    isInt: {
-      options: {
-        gt: 0,
-      },
-    },
+const getHomeRequestSchema = Joi.object().keys({
+  query: {
+    ownerId: Joi.string().uuid().required(),
+    page: Joi.number().integer().greater(0).required(),
+    pageSize: Joi.number().integer().greater(0).required(),
   },
 });
 
-const addHomeValidator = checkSchema({
-  name: {
-    in: ["body"],
-    isString: true,
-    isLength: {
-      options: {
-        min: 1,
-        max: 255,
-      },
-    },
-  },
-  ownerId: {
-    in: ["body"],
-    isUUID: true,
+const addHomeRequestSchema = Joi.object().keys({
+  body: {
+    name: Joi.string().min(1).max(255).required(),
+    ownerId: Joi.string().uuid().required(),
   },
 });
 
-const updateHomeValidator = checkSchema({
-  id: {
-    in: ["params"],
-    isUUID: true,
-  },
-  name: {
-    in: ["body"],
-    isString: true,
-    isLength: {
-      options: {
-        min: 1,
-        max: 255,
-      },
-    },
-  },
-  ownerId: {
-    in: ["body"],
-    isUUID: true,
+const deleteHomeRequestSchema = Joi.object().keys({
+  params: {
+    id: Joi.string().uuid().required(),
   },
 });
 
-export { getHomeValidator, addHomeValidator, updateHomeValidator };
+const updateHomeRequestSchema = Joi.object().keys({
+  params: {
+    id: Joi.string().uuid().required(),
+  },
+  body: {
+    name: Joi.string().min(1).max(255).required(),
+    ownerId: Joi.string().uuid().required(),
+    id: Joi.string()
+      .equal(Joi.ref("...params.id"))
+      .required()
+      .messages({ "any.only": '"body.id" must be equal to "param.id"' }),
+  },
+});
+
+export {
+  getHomeRequestSchema,
+  addHomeRequestSchema,
+  updateHomeRequestSchema,
+  deleteHomeRequestSchema,
+};

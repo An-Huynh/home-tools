@@ -1,15 +1,24 @@
+import { Schema } from "joi";
 import { NextFunction, Request, Response } from "express";
-import { validationResult } from "express-validator";
 
-export function checkSchemaValidation(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next({ status: 400, errors: errors.array() });
-  } else {
-    return next();
-  }
+export function joiValidation(schema: Schema) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const { error } = schema.validate(
+      {
+        params: req.params,
+        query: req.query,
+        body: req.body,
+      },
+      {
+        abortEarly: false,
+        allowUnknown: true,
+      }
+    );
+    if (error) {
+      const messages = error.details.map((detail) => detail.message);
+      return res.status(400).json({ messages });
+    } else {
+      next();
+    }
+  };
 }

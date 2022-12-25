@@ -38,7 +38,7 @@ export async function getHomes(
       count,
       page,
       pageSize,
-      pages: Math.ceil(count / page),
+      pages: Math.ceil(count / pageSize),
     });
   } catch (err) {
     return next(err);

@@ -6,13 +6,13 @@ import {
   updateHome,
 } from "../controllers/home/home-controller";
 import passport from "passport";
-import { checkSchemaValidation } from "../middleware/validation";
 import {
-  addHomeValidator,
-  getHomeValidator,
-  updateHomeValidator,
+  addHomeRequestSchema,
+  updateHomeRequestSchema,
+  getHomeRequestSchema,
+  deleteHomeRequestSchema,
 } from "../validators";
-import { check, param, body } from "express-validator";
+import { joiValidation } from "../middleware/validation";
 
 const homeRouter: Router = express.Router();
 
@@ -84,9 +84,8 @@ const homeRouter: Router = express.Router();
  */
 homeRouter.get(
   "/",
-  getHomeValidator,
-  checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
+  joiValidation(getHomeRequestSchema),
   getHomes
 );
 
@@ -137,9 +136,8 @@ homeRouter.get(
  */
 homeRouter.post(
   "/",
-  addHomeValidator,
-  checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
+  joiValidation(addHomeRequestSchema),
   addHome
 );
 
@@ -175,9 +173,8 @@ homeRouter.post(
  */
 homeRouter.delete(
   "/:id",
-  param("id").isUUID(),
-  checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
+  joiValidation(deleteHomeRequestSchema),
   deleteHome
 );
 
@@ -237,19 +234,8 @@ homeRouter.delete(
  */
 homeRouter.put(
   "/:id",
-  updateHomeValidator,
-  // TODO: Clean this up.
-  // This is to verify 'id' is still passed in the body even
-  // though its not really needed but I want the output and input
-  // of the GET/PUT to be the same.
-  body("id", "id field missing in request body.").exists(),
-  body("id", "home's 'id' field cannot be changed.").custom(
-    (value, { req }) => {
-      return value === undefined || value === req.params?.id;
-    }
-  ),
-  checkSchemaValidation,
   passport.authenticate("jwt", { session: false, failWithError: true }),
+  joiValidation(updateHomeRequestSchema),
   updateHome
 );
 
