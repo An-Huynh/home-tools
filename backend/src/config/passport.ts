@@ -35,7 +35,7 @@ const jwtStrategy: JWTStrategy = new JWTStrategy(
   async (payload: any, done: VerifiedCallback) => {
     try {
       const user = await userRepository.findOneBy({
-        id: payload.id,
+        id: payload.user.id,
       });
       if (user) {
         return done(null, user);
