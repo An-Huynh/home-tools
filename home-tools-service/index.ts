@@ -7,6 +7,7 @@ import swaggerUI from "swagger-ui-express";
 import { User as UserModel } from "./src/db/models/user.model";
 import swaggerSpec from "./src/config/swagger";
 import { corsHandler } from "./src/middleware/cors";
+import { userRouter } from "./src/routes/user-routes";
 
 // TODO: Move this somewhere else?
 declare global {
@@ -27,6 +28,7 @@ app.use(corsHandler);
 
 app.use("/auth", authRouter);
 app.use("/home", homeRouter);
+app.use("/user", userRouter);
 
 if (process.env.NODE_ENV !== "production") {
   app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
