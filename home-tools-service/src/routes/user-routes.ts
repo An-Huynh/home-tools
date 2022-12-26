@@ -48,7 +48,10 @@ const userRouter: Router = express.Router();
  */
 userRouter.get(
   "/:id",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
+  passport.authenticate("access-token", {
+    session: false,
+    failWithError: true,
+  }),
   joiValidation(getUserRequestSchema),
   getUser
 );

@@ -27,15 +27,15 @@ const localStrategy: LocalStrategy = new LocalStrategy(
   }
 );
 
-const jwtStrategy: JWTStrategy = new JWTStrategy(
+const accessTokenStrategy: JWTStrategy = new JWTStrategy(
   {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET,
+    secretOrKey: process.env.ACCESS_TOKEN_SECRET,
   },
   async (payload: any, done: VerifiedCallback) => {
     try {
       const user = await userRepository.findOneBy({
-        id: payload.user.id,
+        id: payload.userId,
       });
       if (user) {
         return done(null, user);
@@ -48,4 +48,4 @@ const jwtStrategy: JWTStrategy = new JWTStrategy(
   }
 );
 
-export { localStrategy, jwtStrategy };
+export { localStrategy, accessTokenStrategy };

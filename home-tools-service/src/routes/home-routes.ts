@@ -84,7 +84,10 @@ const homeRouter: Router = express.Router();
  */
 homeRouter.get(
   "/",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
+  passport.authenticate("access-token", {
+    session: false,
+    failWithError: true,
+  }),
   joiValidation(getHomeRequestSchema),
   getHomes
 );
@@ -136,7 +139,10 @@ homeRouter.get(
  */
 homeRouter.post(
   "/",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
+  passport.authenticate("access-token", {
+    session: false,
+    failWithError: true,
+  }),
   joiValidation(addHomeRequestSchema),
   addHome
 );
@@ -173,7 +179,10 @@ homeRouter.post(
  */
 homeRouter.delete(
   "/:id",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
+  passport.authenticate("access-token", {
+    session: false,
+    failWithError: true,
+  }),
   joiValidation(deleteHomeRequestSchema),
   deleteHome
 );
@@ -234,7 +243,10 @@ homeRouter.delete(
  */
 homeRouter.put(
   "/:id",
-  passport.authenticate("jwt", { session: false, failWithError: true }),
+  passport.authenticate("access-token", {
+    session: false,
+    failWithError: true,
+  }),
   joiValidation(updateHomeRequestSchema),
   updateHome
 );

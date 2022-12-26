@@ -28,8 +28,10 @@ spec:
           value: #{DB_USERNAME}#
         - name: DB_HOST
           value: #{DB_HOST}#
-        - name: JWT_SECRET
-          value: #{JWT_SECRET}#
+        - name: ACCESS_TOKEN_SECRET
+          value: #{ACCESS_TOKEN_SECRET}#
+        - name: REFRESH_TOKEN_SECRET
+          value: #{REFRESH_TOKEN_SECRET}#
         - name: NODE_ENV
           value: #{NODE_ENV}#
 ---
