@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config();
 
 const dataSource = new DataSource({
   database: process.env.DB_DATABASE,
