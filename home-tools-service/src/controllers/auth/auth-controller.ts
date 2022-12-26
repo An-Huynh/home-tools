@@ -20,7 +20,9 @@ export async function login(req: Request, res: Response, next: NextFunction) {
           name: user.name,
           emailAddress: user.emailAddress,
         };
-        const token = jwt.sign({ user: body }, process.env.JWT_SECRET!);
+        const token = jwt.sign({ user: body }, process.env.JWT_SECRET!, {
+          expiresIn: "5m",
+        });
         return res.json({ token });
       });
     } catch (error) {
