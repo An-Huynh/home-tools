@@ -48,4 +48,25 @@ const accessTokenStrategy: JWTStrategy = new JWTStrategy(
   }
 );
 
-export { localStrategy, accessTokenStrategy };
+const refreshTokenStrategy: JWTStrategy = new JWTStrategy(
+  {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.REFRESH_TOKEN_SECRET,
+  },
+  async (payload: any, done: VerifiedCallback) => {
+    try {
+      const user = await userRepository.findOneBy({
+        id: payload.userId,
+      });
+      if (user) {
+        return done(null, user);
+      } else {
+        return done(null, false);
+      }
+    } catch (err) {
+      return done(err);
+    }
+  }
+);
+
+export { localStrategy, accessTokenStrategy, refreshTokenStrategy };

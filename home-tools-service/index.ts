@@ -1,6 +1,10 @@
 import express, { Express } from "express";
 import passport from "passport";
-import { localStrategy, accessTokenStrategy } from "./src/config/passport";
+import {
+  localStrategy,
+  accessTokenStrategy,
+  refreshTokenStrategy,
+} from "./src/config/passport";
 import { authRouter, homeRouter } from "./src/routes";
 import { errorHandler } from "./src/middleware/error";
 import swaggerUI from "swagger-ui-express";
@@ -18,6 +22,7 @@ declare global {
 
 passport.use("local", localStrategy);
 passport.use("access-token", accessTokenStrategy);
+passport.use("refresh-token", refreshTokenStrategy);
 
 const app: Express = express();
 const PORT = 3000;

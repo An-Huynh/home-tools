@@ -25,6 +25,17 @@ export async function login(req: Request, res: Response, next: NextFunction) {
   })(req, res, next);
 }
 
+export async function refresh(req: Request, res: Response, next: NextFunction) {
+  try {
+    // In order to reach here, user must be authenticated so user should be set.
+    const accessToken = generateAccessToken(req.user!.id);
+    const refreshToken = generateRefreshToken(req.user!.id);
+    return res.json({ accessToken, refreshToken });
+  } catch (err) {
+    next(err);
+  }
+}
+
 function generateAccessToken(userId: string): string {
   const payload = { userId };
   const configuration: SignOptions = { expiresIn: "5m" };
