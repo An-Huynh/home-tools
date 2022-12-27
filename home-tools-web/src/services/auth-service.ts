@@ -1,11 +1,14 @@
-import { LoginCredential, AuthTokensResponse } from "@/models/auth";
+import { AuthTokensResponse } from "@/models/auth-tokens-response";
+import { LoginCredential } from "@/models/login-credential";
 import axios, { AxiosResponse } from "axios";
 
 export class AuthService {
   static readonly AUTH_ENDPOINT = `${process.env.VUE_APP_HOME_TOOLS_SERVICE}/auth`;
   static readonly HEADERS = {
-    "content-type": "application/json",
-    accept: "application/json",
+    headers: {
+      "content-type": "application/json",
+      accept: "application/json",
+    },
   };
 
   public login(
@@ -14,7 +17,7 @@ export class AuthService {
     return axios.post<AuthTokensResponse>(
       `${AuthService.AUTH_ENDPOINT}/login`,
       loginCredential,
-      { headers: AuthService.HEADERS }
+      AuthService.HEADERS
     );
   }
 
@@ -25,7 +28,7 @@ export class AuthService {
       `${AuthService.AUTH_ENDPOINT}/refresh`,
       {
         headers: {
-          ...AuthService.HEADERS,
+          ...AuthService.HEADERS.headers,
           Authorization: `Bearer ${refreshToken}`,
         },
       }
