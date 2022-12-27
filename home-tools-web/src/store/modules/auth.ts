@@ -3,6 +3,9 @@ import authService from "@/services/auth-service";
 import { AuthStoreState } from "@/models/auth-store-state";
 import { ActionContext } from "vuex";
 import { LoginCredential } from "@/models/login-credential";
+import { User } from "@/models/user";
+import userService from "@/services/user-service";
+import jwtDecode from "jwt-decode";
 
 export default {
   namespaced: true,
@@ -11,6 +14,7 @@ export default {
       isAuthenticated: false,
       loading: false,
       error: null,
+      user: null,
     };
   },
   mutations: {
@@ -22,6 +26,9 @@ export default {
     },
     setLoading(state: AuthStoreState, loading: boolean) {
       state.loading = loading;
+    },
+    setUser(state: AuthStoreState, user: User) {
+      state.user = user;
     },
   },
   actions: {
@@ -37,6 +44,13 @@ export default {
           loginResponse.data.accessToken,
           loginResponse.data.refreshToken
         );
+
+        const { userId } = jwtDecode<{ userId: string }>(
+          loginResponse.data.accessToken
+        );
+        const user = await userService.getUser(userId);
+
+        context.commit("setUser", user);
         context.commit("setIsAuthenticated", true);
         context.commit("setLoading", false);
       } catch (err: any) {
@@ -45,9 +59,10 @@ export default {
       }
     },
     logout(context: ActionContext<AuthStoreState, any>) {
-      context.commit("setError", null);
       tokenService.removeTokens();
       context.commit("setIsAuthenticated", false);
+      context.commit("setUser", null);
+      context.commit("setError", null);
     },
   },
 };
