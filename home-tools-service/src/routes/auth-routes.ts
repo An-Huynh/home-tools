@@ -52,7 +52,7 @@ authRouter.post("/login", joiValidation(loginCredentialSchema), login);
 /**
  * @swagger
  * /auth/refresh:
- *   post:
+ *   get:
  *     summary: Get new set of access and refresh tokens.
  *     description: Returns a new set of access and refresh token if the
  *                  call is authenticated with an existing refresh token.
@@ -75,7 +75,7 @@ authRouter.post("/login", joiValidation(loginCredentialSchema), login);
  *       500:
  *         description: Internal server error
  */
-authRouter.post(
+authRouter.get(
   "/refresh",
   passport.authenticate("refresh-token", {
     session: false,
