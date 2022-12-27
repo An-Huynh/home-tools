@@ -25,6 +25,7 @@ export async function getHomes(
     const pageSize: number = req.query.pageSize ? +req.query.pageSize : 1;
 
     const [homes, count] = await homeRepository.findAndCount({
+      where: { ownerId: req.query.ownerId },
       order: {
         name: "DESC",
       },
@@ -158,7 +159,9 @@ export async function updateHome(
 
     home.name = req.body.name;
 
-    const { updatedAt, createdAt, ...updatedHome } = await homeRepository.save(home);
+    const { updatedAt, createdAt, ...updatedHome } = await homeRepository.save(
+      home
+    );
 
     return res.status(200).json(updatedHome);
   } catch (err) {
