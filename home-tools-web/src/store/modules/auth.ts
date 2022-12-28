@@ -48,9 +48,9 @@ export default {
         const { userId } = jwtDecode<{ userId: string }>(
           loginResponse.data.accessToken
         );
-        const user = await userService.getUser(userId);
+        const userResponse = await userService.getUser(userId);
 
-        context.commit("setUser", user);
+        context.commit("setUser", userResponse.data);
         context.commit("setIsAuthenticated", true);
         context.commit("setLoading", false);
       } catch (err: any) {
