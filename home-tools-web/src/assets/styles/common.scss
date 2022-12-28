@@ -1,0 +1,23 @@
+@import "@/assets/styles/constants.scss";
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  :visited,
+  :active,
+  :hover {
+    color: inherit;
+  }
+}
+
+body {
+  background-color: $background-color;
+  color: $text-color;
+  font-family: Actor;
+}
