@@ -9,10 +9,22 @@
         />
         <ul class="nav__menu nav__menu--expand-right" v-if="showNavMenu">
           <!-- Placeholder items. -->
-          <li class="nav__menu-item">Households</li>
-          <li class="nav__menu-item">Notifications</li>
-          <li class="nav__menu-item">Grocery List</li>
-          <li class="nav__menu-item">Budget</li>
+          <li class="nav__menu-item">
+            <font-awesome-icon icon="fa-solid fa-house" fixed-width />
+            Households
+          </li>
+          <li class="nav__menu-item">
+            <font-awesome-icon icon="fa-solid fa-bell" fixed-width />
+            Notifications
+          </li>
+          <li class="nav__menu-item">
+            <font-awesome-icon icon="fa-solid fa-basket-shopping" fixed-width />
+            Grocery List
+          </li>
+          <li class="nav__menu-item">
+            <font-awesome-icon icon="fa-solid fa-credit-card" fixed-width />
+            Budget
+          </li>
         </ul>
       </div>
       <router-link
