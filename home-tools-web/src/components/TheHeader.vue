@@ -6,13 +6,16 @@
         icon="fa-solid fa-bars"
         size="xl"
       />
-      <router-link to="/" class="nav__item nav__item--large-font">
+      <router-link
+        to="/"
+        class="nav__item nav__item--large-font nav__item--push-right"
+      >
         <font-awesome-icon icon="fa-solid fa-house-chimney" />
         <span class="nav__title">Home Tools</span></router-link
       >
       <router-link
         to="/login"
-        class="nav__item nav__item--pull-right"
+        class="nav__item"
         v-if="!store.state.auth.isAuthenticated"
         >Login</router-link
       >
@@ -23,7 +26,7 @@
         >Register</router-link
       >
       <span
-        class="nav__item nav__item--pull-right"
+        class="nav__item nav__item--responsive"
         v-if="store.state.auth.isAuthenticated"
         >Welcome, {{ store.state.auth.user.name }}</span
       >
@@ -81,6 +84,9 @@ function onLogout() {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
     @media (min-width: $small-device-width) {
       width: 720px;
     }
@@ -90,8 +96,6 @@ function onLogout() {
     @media (min-width: $large-device-width) {
       width: 1140px;
     }
-    padding-left: 1rem;
-    padding-right: 1rem;
   }
 
   &__item {
@@ -104,8 +108,8 @@ function onLogout() {
       font-size: 1.5rem;
     }
 
-    &--pull-right {
-      margin-left: auto;
+    &--push-right {
+      margin-right: auto;
     }
 
     &--clickable {
@@ -114,6 +118,14 @@ function onLogout() {
 
     &--relative {
       position: relative;
+    }
+
+    &--responsive {
+      display: none;
+
+      @media (min-width: $small-device-width) {
+        display: inline;
+      }
     }
   }
 
