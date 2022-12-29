@@ -2,11 +2,11 @@ import axiosInstance from "@/services/common/axios-instance";
 import { AxiosResponse } from "axios";
 
 export class BaseService {
-  protected post<T>(uri: string, body: any): Promise<AxiosResponse<T>> {
+  protected post<T, B>(uri: string, body: B): Promise<AxiosResponse<T>> {
     return axiosInstance.post<T>(uri, body);
   }
 
-  protected put<T>(uri: string, body: any): Promise<AxiosResponse<T>> {
+  protected put<T, B>(uri: string, body: B): Promise<AxiosResponse<T>> {
     return axiosInstance.put<T>(uri, body);
   }
 

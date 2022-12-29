@@ -1,11 +1,14 @@
 import { createStore } from "vuex";
-import authModule from "@/store/modules/auth";
+import authModule, { AuthState } from "@/store/modules/auth";
 
-export default createStore({
+export interface State {
+  auth: AuthState;
+}
+
+export default createStore<State>({
   modules: {
     auth: authModule,
   },
-  state: {},
   getters: {},
   mutations: {},
   actions: {},

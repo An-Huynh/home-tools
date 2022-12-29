@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import loadingIndicator from "@/components/LoadingIndicator.vue";
-import { reactive, ref, watch, onMounted } from "vue";
+import { reactive, ref, watch } from "vue";
 import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { useRouter } from "vue-router";
@@ -94,7 +94,6 @@ async function onSubmit() {
   if (!v$.value.$invalid) {
     await store.dispatch("auth/login", credentials);
     if (store.state.auth.isAuthenticated) {
-      console.log("isAuthenticated...");
       // Successful login.
       router.push("/");
     } else {

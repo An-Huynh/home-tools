@@ -16,21 +16,14 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "login",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    beforeEnter: (to, from) => {
-      // TODO: Figure out a better way to check this.
-      // eslint-disable-next-line
-      // @ts-ignore
+    beforeEnter: () => {
       if (!store.state.auth.isAuthenticated) {
         return true;
       } else {
         return "/";
       }
     },
-    component: () =>
-      import(/* webpackChunkName: "about" */ "@/views/LoginView.vue"),
+    component: () => import("@/views/LoginView.vue"),
   },
 ];
 
