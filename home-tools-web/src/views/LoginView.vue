@@ -136,6 +136,7 @@ async function onSubmit() {
   &__form-control {
     border: 1px solid $secondary-color;
     border-radius: 0.25rem;
+    outline: none;
     padding: 0.5rem;
     background-color: inherit;
     color: $text-color;
