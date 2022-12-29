@@ -10,13 +10,26 @@
         <font-awesome-icon icon="fa-solid fa-house-chimney" />
         <span class="brand-name">Home Tools</span></router-link
       >
-      <router-link to="/login" class="navbar-user_button">Login</router-link>
-      <router-link to="/signup" class="navbar-user-button"
+      <router-link
+        to="/login"
+        class="navbar-user_button"
+        v-if="!store.state.auth.isAuthenticated"
+        >Login</router-link
+      >
+      <router-link
+        to="/signup"
+        class="navbar-user-button"
+        v-if="!store.state.auth.isAuthenticated"
         >Register</router-link
       >
     </nav>
   </header>
 </template>
+<script setup lang="ts">
+import { useStore } from "vuex";
+
+const store = useStore();
+</script>
 <style scoped lang="scss">
 @import "@/assets/styles/constants.scss";
 
