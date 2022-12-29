@@ -61,7 +61,7 @@
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/styles/constants.scss";
+@import "@/assets/styles/variables.scss";
 
 .container {
   display: flex;
@@ -112,7 +112,7 @@ h1 {
 
 .btn {
   padding: 0.5rem;
-  background-color: $accent-color;
+  background-color: $secondary-color;
   border-radius: 0.25rem;
   border: 0;
   color: black;
@@ -128,7 +128,7 @@ h1 {
   border: 1px solid rgba(0, 0, 0, 0.15);
   border-radius: 0.25rem;
   background-color: inherit;
-  border-color: $accent-color;
+  border-color: $secondary-color;
   color: $text-color;
 }
 

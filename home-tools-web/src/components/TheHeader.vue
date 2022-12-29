@@ -1,47 +1,44 @@
 <template>
-  <header class="navbar">
-    <nav class="content">
+  <header class="nav">
+    <nav class="nav__content">
       <font-awesome-icon
-        class="nav-menu-item"
-        size="xl"
+        class="nav__item nav__item--large-font"
         icon="fa-solid fa-bars"
+        size="xl"
       />
-      <router-link to="/" class="navbar-brand">
+      <router-link to="/" class="nav__item nav__item--large-font">
         <font-awesome-icon icon="fa-solid fa-house-chimney" />
-        <span class="brand-name">Home Tools</span></router-link
+        <span class="nav__title">Home Tools</span></router-link
       >
       <router-link
         to="/login"
-        class="navbar-user-button"
+        class="nav__item nav__item--pull-right"
         v-if="!store.state.auth.isAuthenticated"
         >Login</router-link
       >
       <router-link
         to="/signup"
-        class="navbar-user-button"
+        class="nav__item"
         v-if="!store.state.auth.isAuthenticated"
         >Register</router-link
       >
       <span
-        class="welcome-message nav-menu-item"
+        class="nav__item nav__item--pull-right"
         v-if="store.state.auth.isAuthenticated"
         >Welcome, {{ store.state.auth.user.name }}</span
       >
-      <div class="pos-relative">
+      <div class="nav__item nav__item--clickable nav__item--relative">
         <font-awesome-icon
           v-if="store.state.auth.isAuthenticated"
-          @click.prevent="toggleUserMenu"
-          class="nav-menu-item clickable"
-          size="xl"
+          @click="toggleUserMenu"
           icon="fa-solid fa-user"
+          size="xl"
         />
-        <div class="user-menu" v-if="showUserMenu">
-          <ul class="user-menu-list">
-            <li class="user-menu-item">Your Profile</li>
-            <li class="user-menu-item">Settings</li>
-            <li class="user-menu-item" @click="onLogout">Logout</li>
-          </ul>
-        </div>
+        <ul class="nav__user-menu" v-if="showUserMenu">
+          <li class="nav__user-menu-item">Your Profile</li>
+          <li class="nav__user-menu-item">Settings</li>
+          <li class="nav__user-menu-item" @click="onLogout">Logout</li>
+        </ul>
       </div>
     </nav>
   </header>
@@ -69,95 +66,83 @@ function onLogout() {
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/styles/constants.scss";
-.navbar {
+@import "@/assets/styles/variables.scss";
+
+.nav {
   position: fixed;
-  width: 100%;
-  border-bottom: 1px solid $accent-color;
-  background-color: $background-color;
   top: 0;
   left: 0;
-}
+  border-bottom: 1px solid $secondary-color;
+  width: 100%;
+  background-color: $background-color;
 
-.content {
-  padding-right: 1rem;
-  padding-left: 1rem;
-  align-items: center;
-  margin-right: auto;
-  margin-left: auto;
-  display: flex;
-}
-
-.navbar-brand {
-  margin-right: auto;
-  line-height: 2rem;
-  font-size: 1.5rem;
-  padding: 0.5rem;
-}
-
-.navbar-user-button {
-  line-height: 2rem;
-  padding: 0.5rem;
-  font-size: 1rem;
-}
-
-.nav-menu-item {
-  padding: 0.5rem;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
-.brand-name {
-  display: none;
-}
-
-.user-menu {
-  right: 0;
-  position: absolute;
-  background: $secondary-color;
-  border-radius: 0.5rem;
-}
-
-.user-menu-list {
-  list-style-type: none;
-}
-
-.user-menu-item {
-  white-space: nowrap;
-  padding: 1rem;
-  cursor: pointer;
-  border-radius: 0.5rem;
-  &:hover {
-    background: $accent-color;
-    color: black;
+  &__content {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    @media (min-width: $small-device-width) {
+      width: 720px;
+    }
+    @media (min-width: $medium-device-width) {
+      width: 940px;
+    }
+    @media (min-width: $large-device-width) {
+      width: 1140px;
+    }
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
-}
 
-.pos-relative {
-  position: relative;
-}
+  &__item {
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 2rem;
+    white-space: nowrap;
 
-@media (min-width: $small-device-width) {
-  .content {
-    width: 720px;
+    &--large-font {
+      font-size: 1.5rem;
+    }
+
+    &--pull-right {
+      margin-left: auto;
+    }
+
+    &--clickable {
+      cursor: pointer;
+    }
+
+    &--relative {
+      position: relative;
+    }
   }
-  .brand-name {
-    display: inline;
-    margin-left: 0.25rem;
-  }
-}
 
-@media (min-width: $medium-device-width) {
-  .content {
-    width: 940px;
+  &__title {
+    display: none;
+    @media (min-width: $small-device-width) {
+      display: inline;
+      margin-left: 0.25rem;
+    }
   }
-}
 
-@media (min-width: $large-device-width) {
-  .content {
-    width: 1140px;
+  &__user-menu {
+    position: absolute;
+    right: 0;
+    border-radius: 0.5rem;
+    background-color: $primary-color;
+    list-style-type: none;
+  }
+
+  &__user-menu-item {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: $secondary-color;
+      color: black;
+    }
   }
 }
 </style>

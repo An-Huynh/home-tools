@@ -2,7 +2,7 @@
   <div class="spin"></div>
 </template>
 <style scoped lang="scss">
-@import "@/assets/styles/constants.scss";
+@import "@/assets/styles/variables.scss";
 
 @keyframes spinner {
   0% {
@@ -16,7 +16,7 @@
   animation: 1.5s linear infinite spinner;
   animation-play-state: inherit;
   border: solid 5px #cfd0d1;
-  border-bottom-color: $accent-color;
+  border-bottom-color: $secondary-color;
   border-radius: 50%;
   content: "";
   height: 1rem;
