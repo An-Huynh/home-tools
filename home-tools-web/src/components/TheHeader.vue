@@ -34,7 +34,12 @@ const store = useStore();
 @import "@/assets/styles/constants.scss";
 
 .navbar {
+  position: fixed;
+  width: 100%;
   border-bottom: 1px solid $accent-color;
+  background-color: $background-color;
+  top: 0;
+  left: 0;
 }
 
 .content {
