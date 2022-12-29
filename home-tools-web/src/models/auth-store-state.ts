@@ -5,4 +5,5 @@ export interface AuthStoreState {
   error: string | null;
   user: User | null;
   loading: boolean;
+  hasStartupLoaded: boolean;
 }

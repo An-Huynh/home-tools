@@ -15,6 +15,7 @@ export default {
       loading: false,
       error: null,
       user: null,
+      hasStartupLoaded: false,
     };
   },
   mutations: {
@@ -29,6 +30,9 @@ export default {
     },
     setUser(state: AuthStoreState, user: User) {
       state.user = user;
+    },
+    setHasStartupLoaded(state: AuthStoreState, loaded: boolean) {
+      state.hasStartupLoaded = loaded;
     },
   },
   actions: {
@@ -63,6 +67,35 @@ export default {
       context.commit("setIsAuthenticated", false);
       context.commit("setUser", null);
       context.commit("setError", null);
+    },
+    async loadFromStore(context: ActionContext<AuthStoreState, any>) {
+      try {
+        const refreshToken = tokenService.getRefreshToken();
+        if (!refreshToken) {
+          return;
+        }
+        context.commit("setError", null);
+        context.commit("setLoading", true);
+        const loginResponse = await authService.refresh(refreshToken);
+        tokenService.setTokens(
+          loginResponse.data.accessToken,
+          loginResponse.data.refreshToken
+        );
+
+        const { userId } = jwtDecode<{ userId: string }>(
+          loginResponse.data.accessToken
+        );
+        const userResponse = await userService.getUser(userId);
+
+        context.commit("setUser", userResponse.data);
+        context.commit("setIsAuthenticated", true);
+        context.commit("setLoading", false);
+      } catch (err: any) {
+        tokenService.removeTokens();
+        context.commit("setError", err.message);
+        context.commit("setLoading", false);
+      }
+      context.commit("setHasStartupLoaded", true);
     },
   },
 };

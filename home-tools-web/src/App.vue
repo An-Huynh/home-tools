@@ -1,7 +1,7 @@
 <template>
   <the-header></the-header>
-  <div class="container">
-    <div class="container__content"><router-view /></div>
+  <div class="app-container">
+    <div class="app-container__content"><router-view /></div>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import TheHeader from "@/components/TheHeader.vue";
 <style lang="scss">
 @import "@/assets/styles/common.scss";
 
-.container {
+.app-container {
   display: flex;
   justify-content: center;
 
