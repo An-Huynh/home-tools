@@ -1,11 +1,20 @@
 <template>
   <header class="nav">
     <nav class="nav__content">
-      <font-awesome-icon
-        class="nav__item nav__item--large-font"
-        icon="fa-solid fa-bars"
-        size="xl"
-      />
+      <div class="nav__item nav__item--relative nav__item--clickable">
+        <font-awesome-icon
+          icon="fa-solid fa-bars"
+          size="xl"
+          @click="toggleNavMenu"
+        />
+        <ul class="nav__menu nav__menu--expand-right" v-if="showNavMenu">
+          <!-- Placeholder items. -->
+          <li class="nav__menu-item">Households</li>
+          <li class="nav__menu-item">Notifications</li>
+          <li class="nav__menu-item">Grocery List</li>
+          <li class="nav__menu-item">Budget</li>
+        </ul>
+      </div>
       <router-link
         to="/"
         class="nav__item nav__item--large-font nav__item--push-right"
@@ -37,10 +46,10 @@
           icon="fa-solid fa-user"
           size="xl"
         />
-        <ul class="nav__user-menu" v-if="showUserMenu">
-          <li class="nav__user-menu-item">Your Profile</li>
-          <li class="nav__user-menu-item">Settings</li>
-          <li class="nav__user-menu-item" @click="onLogout">Logout</li>
+        <ul class="nav__menu" v-if="showUserMenu">
+          <li class="nav__menu-item">Your Profile</li>
+          <li class="nav__menu-item">Settings</li>
+          <li class="nav__menu-item" @click="onLogout">Logout</li>
         </ul>
       </div>
     </nav>
@@ -49,23 +58,37 @@
 
 <script setup lang="ts">
 import { useStore } from "vuex";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
 
 const showUserMenu = ref(false);
+const showNavMenu = ref(false);
 
 function toggleUserMenu() {
   showUserMenu.value = !showUserMenu.value;
+  showNavMenu.value = false;
+}
+
+function toggleNavMenu() {
+  showNavMenu.value = !showNavMenu.value;
+  showUserMenu.value = false;
 }
 
 function onLogout() {
   store.dispatch("auth/logout");
   router.push("/");
-  toggleUserMenu();
+  showNavMenu.value = false;
+  showUserMenu.value = false;
 }
+
+watch(route, (to, from) => {
+  showNavMenu.value = false;
+  showUserMenu.value = false;
+});
 </script>
 
 <style scoped lang="scss">
@@ -137,15 +160,20 @@ function onLogout() {
     }
   }
 
-  &__user-menu {
+  &__menu {
     position: absolute;
     right: 0;
     border-radius: 0.5rem;
     background-color: $primary-color;
     list-style-type: none;
+
+    &--expand-right {
+      right: unset;
+      left: 0;
+    }
   }
 
-  &__user-menu-item {
+  &__menu-item {
     padding: 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
