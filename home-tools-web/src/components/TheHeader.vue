@@ -12,7 +12,7 @@
       >
       <router-link
         to="/login"
-        class="navbar-user_button"
+        class="navbar-user-button"
         v-if="!store.state.auth.isAuthenticated"
         >Login</router-link
       >

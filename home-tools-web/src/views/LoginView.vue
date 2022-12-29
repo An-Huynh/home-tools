@@ -24,7 +24,7 @@
         </ul>
         <input
           id="password"
-          :disabled="store.state.auth.isLoading"
+          :disabled="store.state.auth.loading"
           class="form-control"
           name="password"
           type="password"
@@ -41,22 +41,20 @@
           </li>
         </ul>
         <div class="login-buttons">
-          <button class="btn" :disabled="store.state.auth.isLoading">
+          <button class="btn" :disabled="store.state.auth.loading">
             Login
           </button>
           <button
             class="btn"
             type="button"
-            :disabled="store.state.auth.isLoading"
+            :disabled="store.state.auth.loading"
           >
             Forgot Password
           </button>
         </div>
       </form>
       <div class="loader">
-        <loading-indicator
-          v-if="store.state.auth.isLoading"
-        ></loading-indicator>
+        <loading-indicator v-if="store.state.auth.loading"></loading-indicator>
       </div>
     </div>
   </div>
