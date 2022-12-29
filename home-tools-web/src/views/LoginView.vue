@@ -13,7 +13,7 @@
           v-model="v$.username.$model"
           placeholder="Email"
         />
-        <ul class="error-list" v-if="v$.username.$invalid">
+        <ul class="error-list" v-if="v$.username.$errors.length !== 0">
           <li
             class="error"
             v-for="error of v$.username.$errors"
@@ -31,7 +31,7 @@
           placeholder="Password"
           v-model="v$.password.$model"
         />
-        <ul class="error-list" v-if="v$.password.$invalid">
+        <ul class="error-list" v-if="v$.password.$errors.length !== 0">
           <li
             class="error"
             v-for="error of v$.password.$errors"

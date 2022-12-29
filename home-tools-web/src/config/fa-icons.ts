@@ -1,8 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faHouseChimney, faBars } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHouseChimney,
+  faBars,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 
-library.add(faHouseChimney, faBars);
+library.add(faHouseChimney, faBars, faUser);
 
 const FONT_AWESOME_COMPONENT_NAME = "font-awesome-icon";
 

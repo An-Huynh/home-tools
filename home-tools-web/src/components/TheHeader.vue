@@ -22,17 +22,54 @@
         v-if="!store.state.auth.isAuthenticated"
         >Register</router-link
       >
+      <span
+        class="welcome-message nav-menu-item"
+        v-if="store.state.auth.isAuthenticated"
+        >Welcome, {{ store.state.auth.user.name }}</span
+      >
+      <div class="pos-relative">
+        <font-awesome-icon
+          v-if="store.state.auth.isAuthenticated"
+          @click.prevent="toggleUserMenu"
+          class="nav-menu-item clickable"
+          size="xl"
+          icon="fa-solid fa-user"
+        />
+        <div class="user-menu" v-if="showUserMenu">
+          <ul class="user-menu-list">
+            <li class="user-menu-item">Your Profile</li>
+            <li class="user-menu-item">Settings</li>
+            <li class="user-menu-item" @click="onLogout">Logout</li>
+          </ul>
+        </div>
+      </div>
     </nav>
   </header>
 </template>
+
 <script setup lang="ts">
 import { useStore } from "vuex";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const store = useStore();
+
+const showUserMenu = ref(false);
+
+function toggleUserMenu() {
+  showUserMenu.value = !showUserMenu.value;
+}
+
+function onLogout() {
+  store.dispatch("auth/logout");
+  router.push("/");
+  toggleUserMenu();
+}
 </script>
+
 <style scoped lang="scss">
 @import "@/assets/styles/constants.scss";
-
 .navbar {
   position: fixed;
   width: 100%;
@@ -68,8 +105,38 @@ const store = useStore();
   padding: 0.5rem;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .brand-name {
   display: none;
+}
+
+.user-menu {
+  right: 0;
+  position: absolute;
+  background: $secondary-color;
+  border-radius: 0.5rem;
+}
+
+.user-menu-list {
+  list-style-type: none;
+}
+
+.user-menu-item {
+  white-space: nowrap;
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  &:hover {
+    background: $accent-color;
+    color: black;
+  }
+}
+
+.pos-relative {
+  position: relative;
 }
 
 @media (min-width: $small-device-width) {
