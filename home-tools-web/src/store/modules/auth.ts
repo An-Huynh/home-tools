@@ -1,10 +1,11 @@
-import tokenService from "@/services/token-service";
-import authService from "@/services/auth-service";
+import jwtDecode from "jwt-decode";
 import { ActionContext } from "vuex";
+
 import { LoginCredential } from "@/models/login-credential";
 import { User } from "@/models/user";
+import authService from "@/services/auth-service";
+import tokenService from "@/services/token-service";
 import userService from "@/services/user-service";
-import jwtDecode from "jwt-decode";
 import { State } from "@/store";
 
 export interface AuthState {

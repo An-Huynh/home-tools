@@ -21,6 +21,7 @@ import TheHeader from "@/components/TheHeader.vue";
     margin-top: 3rem;
     padding-left: 1rem;
     padding-right: 1rem;
+    width: 100%;
 
     @media (min-width: $small-device-width) {
       width: 720px;

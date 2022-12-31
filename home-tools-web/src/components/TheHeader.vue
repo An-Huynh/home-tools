@@ -10,8 +10,10 @@
         <ul class="nav__menu nav__menu--expand-right" v-if="showNavMenu">
           <!-- Placeholder items. -->
           <li class="nav__menu-item">
-            <font-awesome-icon icon="fa-solid fa-house" fixed-width />
-            Households
+            <router-link to="/households">
+              <font-awesome-icon icon="fa-solid fa-house" fixed-width />
+              Households
+            </router-link>
           </li>
           <li class="nav__menu-item">
             <font-awesome-icon icon="fa-solid fa-bell" fixed-width />
@@ -51,9 +53,11 @@
         v-if="store.state.auth.isAuthenticated"
         >Welcome, {{ store.state.auth.user.name }}</span
       >
-      <div class="nav__item nav__item--clickable nav__item--relative">
+      <div
+        class="nav__item nav__item--clickable nav__item--relative"
+        v-if="store.state.auth.isAuthenticated"
+      >
         <font-awesome-icon
-          v-if="store.state.auth.isAuthenticated"
           @click="toggleUserMenu"
           icon="fa-solid fa-user"
           size="xl"
@@ -69,9 +73,9 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "vuex";
 import { ref, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 const router = useRouter();
 const route = useRoute();
@@ -97,7 +101,7 @@ function onLogout() {
   showUserMenu.value = false;
 }
 
-watch(route, (to, from) => {
+watch(route, () => {
   showNavMenu.value = false;
   showUserMenu.value = false;
 });

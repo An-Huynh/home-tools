@@ -1,5 +1,6 @@
-import axiosInstance from "@/services/common/axios-instance";
 import { AxiosResponse } from "axios";
+
+import axiosInstance from "@/services/common/axios-instance";
 
 export class BaseService {
   protected post<T, B>(uri: string, body: B): Promise<AxiosResponse<T>> {

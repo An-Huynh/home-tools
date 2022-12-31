@@ -1,8 +1,9 @@
+import { AxiosError, AxiosRequestConfig } from "axios";
+import { Store } from "vuex";
+
+import authService from "@/services/auth-service";
 import axiosInstance from "@/services/common/axios-instance";
 import tokenService from "@/services/token-service";
-import { Store } from "vuex";
-import { AxiosRequestConfig, AxiosError } from "axios";
-import authService from "@/services/auth-service";
 import { State } from "@/store";
 
 export function setupHttpInterceptor(store: Store<State>) {

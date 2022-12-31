@@ -1,6 +1,7 @@
+import axios, { AxiosResponse } from "axios";
+
 import { AuthTokensResponse } from "@/models/auth-tokens-response";
 import { LoginCredential } from "@/models/login-credential";
-import axios, { AxiosResponse } from "axios";
 
 export class AuthService {
   static readonly AUTH_ENDPOINT = `${process.env.VUE_APP_HOME_TOOLS_SERVICE}/auth`;

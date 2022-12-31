@@ -61,12 +61,13 @@
 </template>
 
 <script setup lang="ts">
-import loadingIndicator from "@/components/LoadingIndicator.vue";
-import { reactive, ref, watch } from "vue";
-import { required } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import { reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+
+import loadingIndicator from "@/components/LoadingIndicator.vue";
 
 const router = useRouter();
 const store = useStore();

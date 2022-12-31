@@ -1,14 +1,18 @@
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import {
-  faHouseChimney,
-  faHouse,
-  faBars,
-  faUser,
-  faBell,
-  faBasketShopping,
-  faCreditCard,
-} from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBars,
+  faBasketShopping,
+  faBell,
+  faCreditCard,
+  faHouse,
+  faHouseChimney,
+  faPencil,
+  faPlus,
+  faTrash,
+  faUser,
+  faX,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
   faHouseChimney,
@@ -17,9 +21,13 @@ library.add(
   faHouse,
   faBell,
   faBasketShopping,
-  faCreditCard
+  faCreditCard,
+  faPlus,
+  faPencil,
+  faTrash,
+  faX
 );
 
 const FONT_AWESOME_COMPONENT_NAME = "font-awesome-icon";
 
-export { FontAwesomeIcon, FONT_AWESOME_COMPONENT_NAME };
+export { FONT_AWESOME_COMPONENT_NAME, FontAwesomeIcon };
