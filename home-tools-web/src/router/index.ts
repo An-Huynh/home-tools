@@ -5,6 +5,7 @@ import {
   START_LOCATION,
 } from "vue-router";
 
+import { AuthGuard, UnauthGuard } from "@/router/guards/auth-guards";
 import store from "@/store";
 import HomeView from "@/views/HomeView.vue";
 
@@ -17,18 +18,13 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "login",
-    beforeEnter: () => {
-      if (!store.state.auth.isAuthenticated) {
-        return true;
-      } else {
-        return "/";
-      }
-    },
+    beforeEnter: [UnauthGuard],
     component: () => import("@/views/LoginView.vue"),
   },
   {
     path: "/households",
     name: "households",
+    beforeEnter: [AuthGuard],
     component: () => import("@/views/HouseholdsView.vue"),
   },
 ];
