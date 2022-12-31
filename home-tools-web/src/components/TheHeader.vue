@@ -9,8 +9,8 @@
         />
         <ul class="nav__menu nav__menu--expand-right" v-if="showNavMenu">
           <!-- Placeholder items. -->
-          <li class="nav__menu-item">
-            <router-link to="/households">
+          <li class="nav__menu-item nav__menu-item--no-padding">
+            <router-link class="nav__link" to="/households">
               <font-awesome-icon icon="fa-solid fa-house" fixed-width />
               Households
             </router-link>
@@ -199,6 +199,15 @@ watch(route, () => {
       background-color: $secondary-color;
       color: black;
     }
+
+    &--no-padding {
+      padding: 0;
+    }
+  }
+
+  &__link {
+    display: inline-block;
+    padding: 1rem;
   }
 }
 </style>
