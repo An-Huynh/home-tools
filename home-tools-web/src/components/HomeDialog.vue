@@ -21,6 +21,15 @@
           type="text"
           id="name"
         />
+        <ul class="home-dialog__error-list" v-if="v$.name.$errors.length !== 0">
+          <li
+            class="home-dialog__error-item"
+            v-for="error of v$.name.$errors"
+            :key="error.$uid"
+          >
+            {{ error.$message }}
+          </li>
+        </ul>
       </form>
       <div class="home-dialog__actions">
         <button class="home-dialog__btn" :disabled="busy" @click.stop="onSave">
@@ -39,6 +48,8 @@
 </template>
 
 <script setup lang="ts">
+import { useVuelidate } from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 import {
   computed,
   defineEmits,
@@ -60,6 +71,13 @@ const props = defineProps({
 // Component data.
 const home = ref<Home>({ id: "", name: "", ownerId: "" });
 
+// Validation.
+const rules = {
+  name: { required, $autoDirty: true },
+};
+
+const v$ = useVuelidate(rules, home.value);
+
 // Component computed data.
 const title = computed(() => {
   return props.home ? "Edit Home" : "New Home";
@@ -74,13 +92,19 @@ const emits = defineEmits<{
 // Component lifecycle hooks.
 onBeforeMount(() => {
   if (props.home) {
-    home.value = { ...props.home };
+    home.value.ownerId = props.home.ownerId;
+    home.value.name = props.home.name;
+    home.value.id = props.home.id;
   }
 });
 
 // Component methods.
 function onSave() {
-  emits("save", home.value);
+  v$.value.$touch();
+  if (!v$.value.$invalid) {
+    console.log(JSON.stringify(home.value));
+    emits("save", home.value);
+  }
 }
 
 function onCancel() {
@@ -141,6 +165,7 @@ function onCancel() {
   &__form {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
   }
 
   &__form-control {
@@ -178,6 +203,14 @@ function onCancel() {
       color: black;
       cursor: default;
     }
+  }
+
+  &__error-list {
+    list-style-position: inside;
+  }
+
+  &__error-item {
+    color: $error-color;
   }
 }
 </style>
